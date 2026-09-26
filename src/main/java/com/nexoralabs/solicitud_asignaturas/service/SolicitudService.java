@@ -1,6 +1,9 @@
 package com.nexoralabs.solicitud_asignaturas.service;
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
+
+import com.nexoralabs.solicitud_asignaturas.dto.SolicitudConAdhesiones;
 import com.nexoralabs.solicitud_asignaturas.model.Adhesion;
 import com.nexoralabs.solicitud_asignaturas.model.Solicitud;
 import com.nexoralabs.solicitud_asignaturas.model.Usuario;
@@ -36,6 +39,23 @@ public class SolicitudService {
         adhesion.setSolicitud(solicitud);
 
         return adhesionRepository.save(adhesion);
+    }
+
+    public List<SolicitudConAdhesiones> listarSolicitudesConConteo(){
+        List<SolicitudConAdhesiones> solicitudesUnidas = new ArrayList<>();
+
+        for (Solicitud solicitud : solicitudRepository.findAll()) {
+            Long conteo = adhesionRepository.countBySolicitud(solicitud);
+            SolicitudConAdhesiones dto = new SolicitudConAdhesiones(
+                solicitud.getAsignatura(),
+                solicitud.getHorario(),
+                conteo
+            );
+            solicitudesUnidas.add(dto);
+            
+        }
+
+        return  solicitudesUnidas;
     }
 
 }

@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.nexoralabs.solicitud_asignaturas.dto.SolicitudConAdhesiones;
 import com.nexoralabs.solicitud_asignaturas.model.Adhesion;
 import com.nexoralabs.solicitud_asignaturas.model.Solicitud;
 import com.nexoralabs.solicitud_asignaturas.model.Usuario;
@@ -52,5 +54,10 @@ public class SolicitudController {
             .orElseThrow(() -> new RuntimeException("Solicitud no encontrada"));
 
         return solicitudService.sumarseASolicitud(usuario, solicitud);
+    }
+
+    @GetMapping("/director")
+    public List<SolicitudConAdhesiones> listarAdhesiones(){
+        return solicitudService.listarSolicitudesConConteo();
     }
 }
