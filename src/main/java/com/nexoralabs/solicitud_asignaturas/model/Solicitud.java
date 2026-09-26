@@ -8,6 +8,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,9 +27,14 @@ public class Solicitud {
     @JoinColumn(name = "usuario_id")
     private Usuario creador;
 
+    @PrePersist
+    public void onCreated(){
+        this.fechaCreacion = LocalDateTime.now();
+    }
+
     // ! Constructor
     public Solicitud(){
-        this.fechaCreacion = LocalDateTime.now();
+        
     }
     public Solicitud(Long id, String asignatura, String horario, LocalDateTime fechaCreacion, Usuario creador){
         this.id = id;
@@ -76,5 +82,4 @@ public class Solicitud {
         this.horario = horario;
     }
     
-
 }
