@@ -47,9 +47,11 @@ public class SolicitudService {
         for (Solicitud solicitud : solicitudRepository.findAll()) {
             Long conteo = adhesionRepository.countBySolicitud(solicitud);
             SolicitudConAdhesiones dto = new SolicitudConAdhesiones(
+                solicitud.getId(),
                 solicitud.getAsignatura(),
                 solicitud.getHorario(),
-                conteo
+                conteo, 
+                solicitud.getCreador()
             );
             solicitudesUnidas.add(dto);
             
@@ -57,5 +59,39 @@ public class SolicitudService {
 
         return  solicitudesUnidas;
     }
+
+    public Solicitud actualizarSolicitud(Long id, Solicitud datosActualizados) {
+    Solicitud existente = solicitudRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Solicitud no encontrada"));
+
+    existente.setAsignatura(datosActualizados.getAsignatura());
+    existente.setHorario(datosActualizados.getHorario());
+
+    return solicitudRepository.save(existente);
+}
+
+public void eliminarSolicitud(Long id) {
+    if (!solicitudRepository.existsById(id)) {
+        throw new RuntimeException("Solicitud no encontrada");
+    }
+    solicitudRepository.deleteById(id);
+}
+
+    public void darseDeBaja(Usuario usuario, Solicitud solicitud) {
+    Adhesion adhesion = adhesionRepository.findByUsuarioAndSolicitud(usuario, solicitud)
+        .orElseThrow(() -> new RuntimeException("No estás sumado a esta solicitud"));
+
+    adhesionRepository.delete(adhesion);
+}
+
+public List<Long> listarIdsSolicitudesDeUsuario(Usuario usuario) {
+    List<Long> ids = new ArrayList<>();
+
+    for (Adhesion adhesion : adhesionRepository.findByUsuario(usuario)) {
+        ids.add(adhesion.getSolicitud().getId());
+    }
+
+    return ids;
+}
 
 }
