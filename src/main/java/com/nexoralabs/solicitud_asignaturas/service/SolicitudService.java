@@ -71,9 +71,10 @@ public class SolicitudService {
 }
 
 public void eliminarSolicitud(Long id) {
-    if (!solicitudRepository.existsById(id)) {
-        throw new RuntimeException("Solicitud no encontrada");
-    }
+    Solicitud solicitud = solicitudRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Solicitud no encontrada"));
+    
+    adhesionRepository.deleteBySolicitud(solicitud);
     solicitudRepository.deleteById(id);
 }
 
