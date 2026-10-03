@@ -2,8 +2,6 @@
 
 **API REST del backend de Quorom Académico**, una plataforma que permite a los estudiantes universitarios consolidar de forma colectiva sus solicitudes de asignaturas y horarios, facilitando a la dirección de carrera la toma de decisiones sobre apertura de secciones.
 
----
-
 ## 1. Contexto y propósito
 
 En la práctica actual, cuando un grupo de estudiantes necesita que se abra una sección de una asignatura en un horario determinado, cada uno suele gestionar su solicitud de forma individual. Esto genera solicitudes duplicadas, dificulta cuantificar la demanda real y hace más lento el proceso de decisión para la dirección de carrera.
@@ -17,7 +15,21 @@ En la práctica actual, cuando un grupo de estudiantes necesita que se abra una 
 
 Este repositorio corresponde al **backend**: la API que gestiona usuarios, solicitudes y adhesiones. El frontend (interfaz web) consume esta API y se gestiona en un repositorio aparte.
 
----
+### Enlaces
+
+| Recurso | URL |
+|---|---|
+| Plataforma (frontend) | https://solicitud-asignaturas-frontend.vercel.app |
+| API (backend) | https://solicitud-asignaturas.onrender.com |
+
+> **Nota:** el backend está desplegado en un plan gratuito que "duerme" tras un período de inactividad. La primera petición tras un tiempo sin uso puede tardar entre 30 y 50 segundos en responder mientras el servicio se reactiva.
+
+### Acceso de demostración
+
+El registro de nuevos usuarios desde la pantalla de inicio de sesión aún no está habilitado en esta versión. Para probar la plataforma, puede ingresar con la siguiente cuenta de prueba:
+
+- **Correo:** `uno@test.com`
+- **Contraseña:** `miClave123`
 
 ## 2. Arquitectura y tecnologías
 
@@ -31,7 +43,6 @@ Este repositorio corresponde al **backend**: la API que gestiona usuarios, solic
 | Despliegue | Docker sobre Render |
 | CORS | Configurado explícitamente por origen permitido |
 
----
 
 ## 3. Consideraciones de seguridad
 
@@ -40,7 +51,6 @@ Este repositorio corresponde al **backend**: la API que gestiona usuarios, solic
 - El acceso entre dominios (CORS) está restringido explícitamente a los orígenes autorizados (el frontend oficial de la plataforma y el entorno de desarrollo local).
 - **Estado actual:** los endpoints no requieren un token de autenticación por solicitud (no se ha implementado JWT); el control de qué puede ver o hacer cada usuario se maneja actualmente desde el frontend según el rol del usuario autenticado. Esto es una limitación conocida del MVP y es el primer punto señalado en la sección de próximos pasos, antes de un uso en producción con datos reales de estudiantes.
 
----
 
 ## 4. Modelo de datos
 
@@ -72,7 +82,6 @@ Este repositorio corresponde al **backend**: la API que gestiona usuarios, solic
 
 Regla de negocio: un mismo usuario no puede sumarse dos veces a la misma solicitud.
 
----
 
 ## 5. Endpoints de la API
 
@@ -142,7 +151,6 @@ POST /solicitudes
 ]
 ```
 
----
 
 ## 6. Variables de entorno requeridas (despliegue)
 
@@ -155,7 +163,6 @@ Estas variables se configuran directamente en la plataforma de despliegue (no se
 | `DB_PASSWORD` | Contraseña de la base de datos |
 | `PORT` | Puerto en el que se expone el servicio (asignado por la plataforma de despliegue) |
 
----
 
 ## 7. Alcance actual y próximos pasos
 
